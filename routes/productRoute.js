@@ -65,6 +65,7 @@ router.post("/",isAuth,isAdmin, async (req, res) => {
   console.log("here i am")
   const product = new Product({
     name: req.body.name,
+    stripeId: req.body.stripeId,
     price: req.body.price,
     image: req.body.image,
     artist: req.body.artist,

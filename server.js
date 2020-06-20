@@ -44,30 +44,28 @@ app.get("/api/products", (req,res)=>{
     res.send(data.products);
 });
 
-app.post("/payment", async(req,res)=>{
-  console.log("i am the payment backend")
-  // const { productCart, token} = req.body
-  console.log(req.body, "look");
-  res.status(200).end()
-
-  // const idempontencyKey = uuid();
-
-  // return stripe.customers.create({
-  //   email: token.email,
-  //   source: token.id
-  // }).then (customer => {
-  //   stripe.charges.create({
-  //     amount:productCart.price *100,
-  //     currency: 'eur',
-  //     customer: customer.id,
-  //     receipt_email: token.email,
-  //     description: productCart.name,
-  //   }, {idempontencyKey});
-  // })
-  // .then(result => res.status(200).json(result))
-  // .catch(err => console.log("error"))         
-
-})
+app.post("/payment", async (req, res) => {
+  const { productCart, successUrl, cancelUrl } = req.body;
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  let session;
+  try {
+    session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price: productCart.price,
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+    });
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+  return res.status(200).send(session);
+});
 
 app.listen(4000, ()=>{console.log("server started at port 4000")});
 
