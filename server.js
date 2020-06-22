@@ -48,15 +48,11 @@ app.post("/payment", async (req, res) => {
   const { productCart, successUrl, cancelUrl } = req.body;
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   let session;
+  console.log(productCart, "productCart")
   try {
     session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
-      line_items: [
-        {
-          price: productCart.price,
-          quantity: 1,
-        },
-      ],
+      line_items: productCart,
       mode: "payment",
       success_url: successUrl,
       cancel_url: cancelUrl,
