@@ -86,5 +86,5 @@ app.post("/payment", async (req, res) => {
   return res.status(200).send(session);
 });
 
-app.listen(4000, ()=>{console.log("server started at port 4000")});
+app.listen(process.env.PORT || 4000 , ()=>{console.log("server started at port 4000")});
 
