@@ -1,14 +1,14 @@
-import express from 'express';
-import data from './data';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import config from './config';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import userRoute from './routes/userRoute';
-import productRoute from './routes/productRoute';
-import Stripe from 'stripe';
-import fileUpload from 'express-fileupload';
+const express = require('express');
+const data = require('./data');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const config = require('./config');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const userRoute = require('./routes/userRoute');
+const productRoute = require('./routes/productRoute');
+const Stripe = require('stripe');
+const fileUpload = require('express-fileupload');
 
 const stripe = new Stripe("pk_test_51GukltFjCkAyS0oDV6s3ZMe8V2FuE6vCg0hhdUfIJBnhfPbcv7fDcdMmrGmHBWzXEQc5L6PcpkamyepmvBqpBkpM00hsi03sxX");
 
