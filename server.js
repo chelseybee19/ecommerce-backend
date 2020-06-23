@@ -26,7 +26,7 @@ mongoose.connect(mongodbUrl, {
 const app = express();
 
 var corsOptions = {
-  origin: 'https://the-soso-artist.netlify.app/',
+  origin: ['https://the-soso-artist.netlify.app/register' ],
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
