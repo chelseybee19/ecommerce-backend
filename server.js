@@ -2,13 +2,13 @@ import express from 'express';
 import data from './data';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import uuid from 'uuid';
 import config from './config';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import userRoute from './routes/userRoute';
 import productRoute from './routes/productRoute';
 import Stripe from 'stripe';
+import fileUpload from 'express-fileupload';
 
 const stripe = new Stripe("pk_test_51GukltFjCkAyS0oDV6s3ZMe8V2FuE6vCg0hhdUfIJBnhfPbcv7fDcdMmrGmHBWzXEQc5L6PcpkamyepmvBqpBkpM00hsi03sxX");
 
@@ -22,13 +22,36 @@ mongoose.connect(mongodbUrl, {
     useCreateIndex: true,
   }).catch((error) => console.log(error.reason));
 
+
 const app = express();
+
+
 app.use(bodyParser.json());
 
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
+
+
+app.post('/upload', (req, res) => {
+  if(req.files === null){
+    return res.status(400).json({ msg: 'No file uploaded'})
+  }
+  const file = req.files.file;
+
+  file.mv(`${__dirname}/client/public/uploads/${file.name}`, err => {
+    if(err){
+      console.log(err);
+      return res.status(500).send(err);
+    }
+    res.json({ fileName: file.name, filePath: `/uploads/${file.name}`})
+  })
+
+});
+
+
 
 // app.get("/api/products/:id", (req,res)=>{
 //     const productId = req.params.id;
