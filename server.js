@@ -25,14 +25,19 @@ mongoose.connect(mongodbUrl, {
 
 const app = express();
 
+var corsOptions = {
+  origin: 'https://the-soso-artist.netlify.app/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 app.use(bodyParser.json());
 
+
+app.use(express.json());
+app.use(cors(corsOptions));
+app.use(fileUpload());
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
-app.use(express.json());
-app.use(cors());
-app.use(fileUpload());
 
 
 app.post('/upload', (req, res) => {
